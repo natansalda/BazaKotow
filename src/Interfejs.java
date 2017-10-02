@@ -5,16 +5,64 @@ import java.util.regex.Pattern;
 
 public class Interfejs {
 
-    static Scanner inputScanner = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
+
+    static KotDAO kotDao = new KotDAO();
 
     public static void main(String[] args) {
-        Kot kot = new Kot();
+        String wyborUzytkownika;
+        do {
+            System.out.println();
+            System.out.println("Wybierz, co chcesz zrobić, a następnie zatwierdź enterem:");
+            System.out.println("[1] Dodaj nowego kota");
+            System.out.println("[2] Pokaż wszystkie koty");
+            System.out.println("[x] Zakończ");
+            wyborUzytkownika = getUserInput();
+            if (wyborUzytkownika.equals("1")) {
+                dodajKota();
+            } else if (wyborUzytkownika.equals("2")) {
+                pokazKoty();
+            }
+        } while (!wyborUzytkownika.equalsIgnoreCase("x"));
 
+    }
+
+    private static void pokazKoty() {
+        System.out.println();
+        System.out.println("#########################################################");
+        System.out.println("######                 LISTA KOTÓW                 ######");
+        System.out.println("#########################################################");
+
+        Kot kot;
+        for (int i=0; i<kotDao.getKoty().size(); i++) {
+            kot = kotDao.getKoty().get(i);
+            System.out.println(i + ": " + kot.getImie());
+        }
+        System.out.println();
+        Pattern wzorzecNumeru = Pattern.compile("[0-9]+");
+        String numerWczytany;
+        do {
+            System.out.print("Którego kota chcesz poznać bliżej? ");
+            numerWczytany = getUserInput();
+        } while (!wzorzecNumeru.matcher(numerWczytany).matches());
+
+        Integer numerKota = Integer.parseInt(numerWczytany);
+        if (kotDao.getKoty().size()>numerKota) {
+            Kot wybranyKot = kotDao.getKoty().get(numerKota);
+            System.out.println("Wybrany kot ma na imie "+wybranyKot.getImie()+", waży "+wybranyKot.getWaga()+", urodził się "+wybranyKot.getUrodzenie().toString()+", a opiekuje się nim "+wybranyKot.getImieOpiekuna());
+        } else {
+            System.out.println("Niestety, nie znalazłem kota o wybranym numerze :( Sprobój ponownie lub go dodaj!");
+        }
+    }
+
+    private static void dodajKota() {
+        System.out.println();
+        System.out.println("#########################################################");
+        System.out.println("######                 DODAJ  KOTA                 ######");
+        System.out.println("#########################################################");
+        Kot kot = new Kot();
         System.out.print("Podaj imię kota: ");
         kot.setImie(getUserInput());
-
-        System.out.print("Podaj, kto jest opiekunem kota: ");
-        kot.setImieOpiekuna(getUserInput());
 
         Pattern wzorzecDaty = Pattern.compile("[0-9]{4}.[0-1]?[0-9].[0-3]?[0-9]");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
@@ -42,13 +90,16 @@ public class Interfejs {
             }
         } while (kot.getWaga() == null);
 
-        System.out.println("Dziękuję, teraz już wiem prawie wszystko o kocie!");
-        System.out.println(kot.przedstawSie());
+        System.out.print("Podaj kto jest opiekunem kota: ");
+        kot.setImieOpiekuna(getUserInput());
+
+        kotDao.dodajKota(kot);
+
+        System.out.println("Dziękuję, teraz wiem o kocie naprawdę wszystko! Dodałem go do naszego zbioru.");
     }
 
-
     public static String getUserInput() {
-        return inputScanner.nextLine().trim();
+        return sc.nextLine().trim();
     }
 
 }
