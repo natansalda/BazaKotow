@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BazaKotow.iml" filepath="$PROJECT_DIR$/BazaKotow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/BazaKotow.iml" filepath="$PROJECT_DIR$/.idea/BazaKotow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/koty-application/koty-application.iml" filepath="$PROJECT_DIR$/koty-application/koty-application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/koty-domain/koty-domain.iml" filepath="$PROJECT_DIR$/koty-domain/koty-domain.iml" />
     </modules>
   </component>
 </project>
